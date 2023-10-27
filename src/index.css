@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  font-family: "Inter", sans-serif;
+}
+.text-carshop {
+  color: #ff3811;
+}
+.bg-carshop {
+  background-color: #ff3811;
+}
+.border-carshop {
+  border-color: #ff3811;
+}
+.text-carshop:hover {
+  background-color: #ff3811;
+}
+.navlink {
+  font-size: 18px;
+  font-weight: 600;
+}
+.navlink:hover {
+  background-color: #ff3811;
+  color: #fff;
+}
