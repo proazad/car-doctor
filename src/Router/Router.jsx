@@ -1,4 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
+import AddNewService from "../Layout/AddNewService/AddNewService";
+import CartDetails from "../Layout/CartDetails/CartDetails";
 import CheckOut from "../Layout/CheckOut/CheckOut";
 import ErrorPage from "../Layout/ErrorPage/ErrorPage";
 import Home from "../Layout/Home/Home";
@@ -27,6 +29,14 @@ const Router = createBrowserRouter([
       {
         path: "/checkout",
         element: <CheckOut />,
+      },
+      {
+        path: "/addnewservice",
+        element: <AddNewService />,
+      },
+      {
+        path: "/cartdetails",
+        element: <CartDetails />,
       },
     ],
   },
