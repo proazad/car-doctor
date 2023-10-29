@@ -1,12 +1,13 @@
 import {
-    FacebookAuthProvider,
-    GoogleAuthProvider,
-    createUserWithEmailAndPassword,
-    getAuth,
-    onAuthStateChanged,
-    signInWithEmailAndPassword,
-    signInWithPopup,
-    signOut,
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  updateProfile,
 } from "firebase/auth";
 import PropTypes from "prop-types";
 import { createContext, useEffect, useState } from "react";
@@ -24,7 +25,12 @@ const AuthoProvider = ({ children }) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
-
+  const updateFirebaseProfile = (name, photo) => {
+    updateProfile(auth.currentUser, {
+      displayName: name,
+      photoURL: photo,
+    });
+  };
   const signInWithFacebook = () => {
     return signInWithPopup(auth, fbprovider);
   };
@@ -45,6 +51,7 @@ const AuthoProvider = ({ children }) => {
   useEffect(() => {
     const unsubcribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
+      setLoading(false);
     });
     return () => unsubcribe();
   }, [auth]);
@@ -53,6 +60,7 @@ const AuthoProvider = ({ children }) => {
     user,
     loading,
     createUser,
+    updateFirebaseProfile,
     signInWithFacebook,
     signInWithGoogle,
     userSignin,

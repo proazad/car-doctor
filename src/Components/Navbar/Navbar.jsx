@@ -1,30 +1,59 @@
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.svg";
-import {BsHandbag,BsSearch} from "react-icons/bs"
+import { BsHandbag, BsSearch } from "react-icons/bs";
+import { useContext } from "react";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
+import swal from "sweetalert";
 const Navbar = () => {
+  const { user, userSignOut } = useContext(AuthContext);
+  const handelLogout = () => {
+    userSignOut()
+      .then(() => {
+        swal("Logout!", "Successfully Logout", "success");
+      })
+      .catch((error) => {
+        swal("Opps!", error.message, "error");
+      });
+  };
   const navlinks = (
     <>
       <li>
-        <Link className="navlink" to="/">Home</Link>
+        <Link className="navlink" to="/">
+          Home
+        </Link>
       </li>
       <li>
-        <Link className="navlink" to="/about">About</Link>
+        <Link className="navlink" to="/about">
+          About
+        </Link>
       </li>
       <li>
-        <Link className="navlink" to="/services">Services</Link>
+        <Link className="navlink" to="/services">
+          Services
+        </Link>
       </li>
       <li>
-        <Link className="navlink" to="/blog">Blog</Link>
+        <Link className="navlink" to="/blog">
+          Blog
+        </Link>
       </li>
       <li>
-        <Link className="navlink" to="/contact">Contact</Link>
+        <Link className="navlink" to="/contact">
+          Contact
+        </Link>
       </li>
       <li>
-        <Link className="navlink" to="/signin">Signin</Link>
+        <Link className="navlink" to="/signin">
+          Signin
+        </Link>
       </li>
-      <li>
-        <Link className="navlink" to="/signup">Signup</Link>
-      </li>
+      {user?.email && (
+        <li>
+          <button onClick={handelLogout} className="navlink">
+            Log out
+          </button>
+        </li>
+      )}
     </>
   );
   return (
@@ -51,7 +80,7 @@ const Navbar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
-           {navlinks}
+            {navlinks}
           </ul>
         </div>
         <Link to="/" className="normal-case text-xl">
@@ -63,10 +92,12 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         <p className="flex gap-5 justify-center items-center mr-8 text-xl">
-          <BsHandbag className="cursor-pointer"/>
-          <BsSearch className="cursor-pointer"/>
+         <Link to="/cartdetails"> <BsHandbag  className="cursor-pointer" /></Link>
+          <BsSearch className="cursor-pointer" />
         </p>
-        <a className="btn border-2 btn-outline border-carshop text-carshop text-lg">Appointment</a>
+        <a className="btn border-2 btn-outline border-carshop text-carshop text-lg">
+          Appointment
+        </a>
       </div>
     </nav>
   );

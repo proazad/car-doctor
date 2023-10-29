@@ -7,6 +7,7 @@ import Home from "../Layout/Home/Home";
 import Root from "../Layout/Root/Root";
 import SignUp from "../Layout/SignUp/SignUp";
 import Signin from "../Layout/Signin/Signin";
+import PrivateRoute from "./PrivateRoute/PrivateRoute";
 
 const Router = createBrowserRouter([
   {
@@ -27,16 +28,32 @@ const Router = createBrowserRouter([
         element: <SignUp />,
       },
       {
-        path: "/checkout",
-        element: <CheckOut />,
+        path: "/checkout/:id",
+        element: (
+          <PrivateRoute>
+            {" "}
+            <CheckOut />
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/services/${params.id}`),
       },
       {
         path: "/addnewservice",
-        element: <AddNewService />,
+        element: (
+          <PrivateRoute>
+            <AddNewService />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/cartdetails",
-        element: <CartDetails />,
+        element: (
+          <PrivateRoute>
+            <CartDetails />
+          </PrivateRoute>
+        ),
+        loader: () => fetch("http://localhost:5000/bookings"),
       },
     ],
   },

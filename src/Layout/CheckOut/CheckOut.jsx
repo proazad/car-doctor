@@ -1,5 +1,55 @@
+import { useContext } from "react";
+import PropTypes from "prop-types";
+import { Navigate, useLoaderData, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
 import checkout from "../../assets/images/checkout/checkout.png";
+import axios from "axios";
+import swal from "sweetalert";
 const CheckOut = () => {
+  const { user } = useContext(AuthContext);
+  const service = useLoaderData();
+  const navigate = useNavigate();
+  const name = user.displayName.split(" ");
+  const { title, _id, price, img } = service;
+  const hanldeOrderBooking = (event) => {
+    event.preventDefault();
+    const form = new FormData(event.target);
+    const fname = form.get("fName");
+    const lname = form.get("lName");
+    const name = fname + " " + lname;
+    const phone = form.get("phone");
+    const email = form.get("email");
+    const date = form.get("date");
+    const dueAmount = form.get("dueAmount");
+    const message = form.get("message");
+    const booking = {
+      customerName: name,
+      phone,
+      email,
+      date,
+      dueAmount,
+      message,
+      serviceId: _id,
+      img,
+      service: title,
+    };
+
+    axios
+      .post("http://localhost:5000/bookings", booking)
+      .then((res) => {
+        if (res.data.acknowledged) {
+          swal("Cool!", "Booking Confirm", "success");
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        swal(
+          "Opps!",
+          `Something went wrong try again ${error.message}`,
+          "error"
+        );
+      });
+  };
   return (
     <div className="container mx-auto my-10">
       <div
@@ -14,7 +64,8 @@ const CheckOut = () => {
         </div>
       </div>
       <div className="bg-rose-100 px-28 py-20 my-10 rounded-xl">
-        <form>
+        <form onSubmit={hanldeOrderBooking}>
+          <h2 className="text-center text-2xl font-semibold mb-5">{title}</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             <div className="form-control">
               <label htmlFor="fName" className="label">
@@ -24,7 +75,7 @@ const CheckOut = () => {
                 type="text"
                 name="fName"
                 id="fName"
-                placeholder="First Name"
+                defaultValue={name[0]}
                 className="input input-bordered"
               />
             </div>
@@ -36,11 +87,12 @@ const CheckOut = () => {
                 type="text"
                 name="lName"
                 id="lName"
-                placeholder="Last Name"
+                defaultValue={name[1]}
                 className="input input-bordered"
               />
             </div>
           </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             <div className="form-control">
               <label htmlFor="phone" className="label">
@@ -52,6 +104,7 @@ const CheckOut = () => {
                 id="phone"
                 placeholder="Your Phone"
                 className="input input-bordered"
+                required
               />
             </div>
             <div className="form-control">
@@ -62,11 +115,40 @@ const CheckOut = () => {
                 type="email"
                 name="email"
                 id="email"
-                placeholder="Your Email"
+                defaultValue={user.email}
                 className="input input-bordered"
+                readOnly
               />
             </div>
           </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <div className="form-control">
+              <label htmlFor="date" className="label">
+                Date
+              </label>
+              <input
+                type="date"
+                name="date"
+                id="date"
+                className="input input-bordered"
+                required
+              />
+            </div>
+            <div className="form-control">
+              <label htmlFor="due" className="label">
+                Due
+              </label>
+              <input
+                type="text"
+                name="dueAmount"
+                id="due"
+                defaultValue={`${price}`}
+                className="input input-bordered"
+                placeholder="Due Ammount"
+              />
+            </div>
+          </div>
+
           <div className="form-control">
             <label htmlFor="message" className="label">
               Your Message
@@ -74,10 +156,15 @@ const CheckOut = () => {
             <textarea
               className="textarea textarea-bordered"
               placeholder="Your Message"
+              name="message"
             ></textarea>
           </div>
           <div className="form-control mt-5">
-            <input type="submit" value="Order Confirm" className="btn duration-500 w-full bg-[#FF3811] hover:bg-black text-white" />
+            <input
+              type="submit"
+              value="Order Confirm"
+              className="btn duration-500 w-full bg-[#FF3811] hover:bg-black text-white"
+            />
           </div>
         </form>
       </div>
@@ -86,3 +173,6 @@ const CheckOut = () => {
 };
 
 export default CheckOut;
+CheckOut.propTypes = {
+  service: PropTypes.object,
+};

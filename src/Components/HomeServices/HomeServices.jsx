@@ -1,6 +1,15 @@
+import { useEffect, useState } from "react";
 import ServiceCard from "../ServiceCard/ServiceCard";
+import axios from "axios";
+import { useSearchParams } from "react-router-dom";
 
 const HomeServices = () => {
+  const [services, setServics] = useState([]);
+  useEffect(() => {
+    axios.get("http://localhost:5000/services").then((res) => {
+      setServics(res.data);
+    });
+  }, []);
   return (
     <section className="bg-base-200 pb-10">
       <div className="container mx-auto my-24">
@@ -14,12 +23,9 @@ const HomeServices = () => {
           </p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <ServiceCard />
-          <ServiceCard />
-          <ServiceCard />
-          <ServiceCard />
-          <ServiceCard />
-          <ServiceCard />
+          {services?.map((service) => (
+            <ServiceCard key={service._id} service={service} />
+          ))}
         </div>
         <div className="text-center">
           <a className="mt-10 btn border-2 btn-outline outline-[#FF3811] text-[#FF3811] text-lg hover:text-white duration-500">
