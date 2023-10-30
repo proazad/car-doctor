@@ -4,9 +4,12 @@ import { FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import swal from "sweetalert";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SocialLogin = () => {
   const { signInWithFacebook, signInWithGoogle } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
   const handleFacebookLogin = () => {
     signInWithFacebook()
       .then((result) => {
@@ -42,11 +45,12 @@ const SocialLogin = () => {
   };
   const handleGoogleLogin = () => {
     signInWithGoogle()
-      .then((result) => {
-        swal("Congrates!", "Linkedin Login not available!", "success");
+      .then(() => {
+        swal("Congrates!", "Congrate successfully Login!", "success");
+        navigate(location?.state ? location?.state : "/" );
       })
-      .catch((error) => {
-        return swal("Sorry!", "Linkedin Login not available!", "error");
+      .catch(() => {
+        return swal("Sorry!", "Something went wrong!", "error");
       });
   };
   return (

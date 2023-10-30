@@ -17,7 +17,7 @@ const Signin = () => {
     const password = form.get("password");
 
     userSignin(email, password)
-      .then((res) => {
+      .then(() => {
         swal("Cool!", "Successfully Sign in", "success");
         navigate(location?.state ? location?.state : "/");
       })

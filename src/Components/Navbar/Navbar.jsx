@@ -42,18 +42,18 @@ const Navbar = () => {
           Contact
         </Link>
       </li>
-      <li>
-        <Link className="navlink" to="/signin">
-          Signin
-        </Link>
-      </li>
-      {user?.email && (
+      
+      {user?.email ? (
         <li>
           <button onClick={handelLogout} className="navlink">
             Log out
           </button>
         </li>
-      )}
+      ) : <li>
+      <Link className="navlink" to="/signin">
+        Signin
+      </Link>
+    </li>}
     </>
   );
   return (

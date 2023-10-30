@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import axios from "axios";
 import PropTypes from "prop-types";
-import { Navigate, useLoaderData, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import checkout from "../../assets/images/checkout/checkout.png";
-import axios from "axios";
-import swal from "sweetalert";
 const CheckOut = () => {
   const { user } = useContext(AuthContext);
   const service = useLoaderData();
@@ -39,7 +39,7 @@ const CheckOut = () => {
       .then((res) => {
         if (res.data.acknowledged) {
           swal("Cool!", "Booking Confirm", "success");
-          navigate("/");
+          navigate("/cartdetails");
         }
       })
       .catch((error) => {
