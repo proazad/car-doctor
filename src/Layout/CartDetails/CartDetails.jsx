@@ -11,7 +11,9 @@ const CartDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/bookings?email=${user.email}`)
+      .get(`http://localhost:5000/bookings?email=${user.email}`, {
+        withCredentials: true,
+      })
       .then((res) => {
         setBookings(res.data);
       })
@@ -91,7 +93,7 @@ const CartDetails = () => {
         {bookings?.map((booking) => (
           <div key={booking._id} className="flex justify-between">
             {booking?.status === "confirm" ? (
-              <AiFillCheckCircle  className="bg-green-600 rounded-full text-3xl text-white p-1"/>
+              <AiFillCheckCircle className="bg-green-600 rounded-full text-3xl text-white p-1" />
             ) : (
               <RxCross2
                 onClick={() => handleDeleteBooking(booking._id)}

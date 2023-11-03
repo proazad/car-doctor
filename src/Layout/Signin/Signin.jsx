@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useContext, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -17,9 +18,22 @@ const Signin = () => {
     const password = form.get("password");
 
     userSignin(email, password)
-      .then(() => {
-        swal("Cool!", "Successfully Sign in", "success");
-        navigate(location?.state ? location?.state : "/");
+      .then((result) => {
+        const loggedInUser = result.user;
+        const user = { email: loggedInUser.email };
+        // get access jwt token
+        axios
+          .post("http://localhost:5000/jwt", user, { withCredentials: true })
+          .then((result) => {
+            if (result.data.success) {
+              navigate(location?.state ? location?.state : "/");
+              swal("Cool!", "Successfully Sign in", "success");
+            }
+            console.log(result.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         swal("Opps!", "Something went wrong, User or password wrong!", "error");
