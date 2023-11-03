@@ -7,13 +7,13 @@ import { initializeApp } from "firebase/app";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyB3nDQNHTf_tH1-_bPTq7LEIrZlcACK8sU",
-  authDomain: "car-doctor-1c2fd.firebaseapp.com",
-  projectId: "car-doctor-1c2fd",
-  storageBucket: "car-doctor-1c2fd.appspot.com",
-  messagingSenderId: "926272655956",
-  appId: "1:926272655956:web:c494610d73373b49e713c1",
-  measurementId: "G-DZLSG4MEFQ"
+  apiKey: import.meta.env.VITE_APIKEY,
+  authDomain:import.meta.env.VITE_AUTHDOMAIN ,
+  projectId: import.meta.env.VITE_PROJECTID,
+  storageBucket: import.meta.env.VITE_STORAGEBUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGINGSENDERID,
+  appId: import.meta.env.VITE_APPID,
+  measurementId:import.meta.env.VITE_MEASUREMENTID 
 };
 
 // Initialize Firebase
